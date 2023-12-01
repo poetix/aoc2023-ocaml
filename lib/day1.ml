@@ -64,11 +64,10 @@ let rec get_digits : char list -> int list = fun line_chars ->
   match line_chars with
   | [] -> []
   | _ :: rest ->
-    let matched_digits = List.filter_map ~f: (fun (pattern, digit) ->
-      if (starts_with line_chars pattern) then Some digit else None)
-      digit_patterns in
-    match matched_digits with
-    | digit :: _ -> digit :: (get_digits rest)
+    let matched_pattern = List.find ~f: (fun (pattern, _) ->
+      starts_with line_chars pattern) digit_patterns in
+    match matched_pattern with
+    | Some (_, digit) -> digit :: (get_digits rest)
     | _ -> get_digits rest
 
 
