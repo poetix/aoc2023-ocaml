@@ -29,10 +29,10 @@ let turns = sep_by semicolon turn
 let game = lift2 pair game_label turns
 
 let count_or_0 : (bead_colour_literal * int) list -> bead_colour_literal -> int = fun draws colour ->
-  List.Assoc.find ~equal:equal_bead_colour_literal draws colour |> (function Some n -> n | _ -> 0)
+  List.Assoc.find ~equal:equal_bead_colour_literal draws colour |> Option.value ~default:0
 
 let max_beads bead_type turns = 
-  let max_int ints = List.max_elt ~compare:Int.compare ints |> (function Some n -> n | _ -> 0) in
+  let max_int ints = List.max_elt ~compare:Int.compare ints |> Option.value ~default:0 in
   List.map ~f: (fun turn -> count_or_0 turn bead_type) turns |> max_int
 
 let is_possible : (bead_colour_literal * int) list list -> bool = fun turns ->
